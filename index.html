@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#07111f">
   <meta name="description" content="MoneyFlow personal budget and spending tracker">
   <title>MoneyFlow</title>
+
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/sidebar-premium.css">
@@ -136,7 +137,6 @@
               <h3>Activity</h3>
               <button type="button" class="danger-btn" id="clearAllTransactions">Clear all</button>
             </div>
-
             <div class="table-wrap">
               <table>
                 <thead>
@@ -214,6 +214,7 @@
                 </label>
                 <button type="submit" class="primary-btn">Save category</button>
               </form>
+              <div id="categoryList" class="settings-list" style="margin-top: 12px;"></div>
             </div>
           </div>
         </section>
@@ -229,8 +230,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="js/app.js" defer></script>
-  <script src="js/budget-category-management.js" defer></script>
-  <script src="js/runtime-fixes.js" defer></script>
   <script src="js/sidebar-nav.js" defer></script>
 </body>
 </html>
