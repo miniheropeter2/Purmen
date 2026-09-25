@@ -1,20 +1,2 @@
-/* Final interaction safety fixes: no invisible overlay may block controls. */
-body::before { pointer-events: none !important; }
-body.sidebar-open::after { pointer-events: auto; }
-body:not(.sidebar-open)::after { display: none !important; pointer-events: none !important; }
-.sidebar { pointer-events: auto !important; }
-.nav-item, #floatingAddTransaction, #mobileMenu, #sidebarMenuToggle { pointer-events: auto !important; position: relative; z-index: 101; }
-.click-fix-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 16px; background: rgba(2, 6, 23, .68); backdrop-filter: blur(6px); }
-.click-fix-modal.hidden { display: none !important; }
-.click-fix-dialog { width: min(700px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 24px; color: var(--text); background: var(--surface-solid); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
-body.dark .click-fix-dialog { background: linear-gradient(145deg, rgba(19,30,52,.99), rgba(10,16,30,.99)); }
-.click-fix-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 0; padding: 5px; border: 1px solid var(--line); border-radius: 14px; }
-.click-fix-tabs button { min-height: 42px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; font-weight: 700; }
-.click-fix-tabs button.active { color: #fff; background: linear-gradient(135deg, var(--blue), var(--violet)); }
-.click-fix-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.click-fix-grid label { display: grid; gap: 7px; }
-.click-fix-grid label.full { grid-column: 1/-1; }
-.click-fix-grid input, .click-fix-grid select { min-height: 44px; width: 100%; padding: 0 12px; color: var(--text); background: var(--surface-solid); border: 1px solid var(--line); border-radius: 12px; }
-.click-fix-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.click-fix-error { min-height: 0; color: var(--red); margin-bottom: 8px; }
-@media (max-width: 560px) { .click-fix-tabs, .click-fix-grid { grid-template-columns: 1fr; } .click-fix-grid label.full { grid-column: auto; } }
+/* Compatibility stylesheet intentionally contains no overlays or interaction
+   overrides. The application styles own layout, z-index, and pointer events. */
