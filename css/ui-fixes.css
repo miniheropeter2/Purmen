@@ -1,0 +1,214 @@
+/* Global theme fix: this stylesheet is loaded after the base styles so every
+   component uses the same light/dark design tokens. */
+:root {
+  color-scheme: light;
+  --bg: #f4f7fb;
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-solid: #ffffff;
+  --text: #172033;
+  --muted: #718096;
+  --line: rgba(100, 116, 139, 0.28);
+  --blue: #4f8cff;
+  --cyan: #0891b2;
+  --violet: #7c3aed;
+  --green: #059669;
+  --yellow: #b7791f;
+  --red: #dc2626;
+  --shadow: 0 18px 50px rgba(15, 23, 42, 0.10);
+}
+
+body,
+body:not(.dark) {
+  color-scheme: light;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% -10%, rgba(79, 140, 255, 0.12), transparent 32%),
+    radial-gradient(circle at 100% 0, rgba(139, 92, 246, 0.10), transparent 30%),
+    var(--bg);
+}
+
+body.dark {
+  color-scheme: dark;
+  --bg: #070b16;
+  --surface: rgba(13, 20, 36, 0.86);
+  --surface-solid: #0d1424;
+  --text: #f2f6ff;
+  --muted: #91a2bb;
+  --line: rgba(148, 163, 184, 0.18);
+  --cyan: #22d3ee;
+  --green: #34d399;
+  --yellow: #fbbf24;
+  --red: #fb7185;
+  --shadow: 0 22px 70px rgba(0, 0, 0, 0.34);
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% -10%, rgba(79, 140, 255, 0.16), transparent 32%),
+    radial-gradient(circle at 100% 0, rgba(139, 92, 246, 0.14), transparent 30%),
+    var(--bg);
+}
+
+.panel,
+.sidebar,
+.topbar,
+.quick-action,
+.settings-item,
+.loan-item,
+.category-pod,
+.table-wrap,
+.budget-category-management-row,
+.settings-management-row {
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.panel { background: var(--surface); }
+.sidebar,
+.topbar { background: color-mix(in srgb, var(--surface-solid) 72%, transparent); }
+.quick-action { background: color-mix(in srgb, var(--blue) 10%, var(--surface-solid)); }
+.table-wrap,
+.settings-item,
+.loan-item,
+.category-pod,
+.budget-category-management-row,
+.settings-management-row { background: color-mix(in srgb, var(--surface-solid) 84%, transparent); }
+
+input,
+select,
+textarea,
+.month-picker select,
+.mini-picker select,
+.stack-form input,
+.stack-form select,
+.transaction-modal input,
+.transaction-modal select {
+  color: var(--text);
+  background-color: var(--surface-solid);
+  border-color: var(--line);
+  color-scheme: inherit;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea,
+body.dark .stack-form input,
+body.dark .stack-form select,
+body.dark .transaction-modal input,
+body.dark .transaction-modal select {
+  background-color: rgba(7, 11, 22, .72);
+}
+
+input::placeholder,
+textarea::placeholder { color: var(--muted); }
+select option { color: var(--text); background: var(--surface-solid); }
+body.dark select option { color: #f2f6ff; background: #0d1424; }
+
+button,
+.nav-item,
+.theme-button,
+.ghost-btn,
+.secondary-btn,
+.remove-btn,
+.modal-close { color: var(--text); }
+.muted,
+small,
+.section-title p,
+.loan-meta,
+.settings-item small,
+.budget-category-management-meta small { color: var(--muted); }
+
+.transaction-modal {
+  color: var(--text);
+  background: var(--surface-solid);
+  border-color: var(--line);
+}
+body.dark .transaction-modal {
+  background: linear-gradient(145deg, rgba(19, 30, 52, .98), rgba(10, 16, 30, .98));
+}
+.transaction-tabs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: color-mix(in srgb, var(--surface-solid) 82%, transparent);
+  border-color: var(--line);
+}
+.transaction-tab { color: var(--muted); }
+.transaction-tab.active { color: #fff; }
+
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.table-wrap table { min-width: 720px; }
+
+body.modal-open { overflow: hidden; }
+.transaction-form-grid .amount-field.hidden-field,
+.transaction-modal .amount-field-hidden { display: none !important; }
+
+/* Compact home summary on narrow screens without changing its data or behavior. */
+@media (max-width: 560px) {
+  #home .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  #home .cards .stat-card {
+    min-height: 78px;
+    margin-bottom: 0;
+    padding: 12px;
+    border-radius: 14px;
+    gap: 8px;
+  }
+
+  #home .cards .stat-card small {
+    font-size: .68rem;
+    line-height: 1.2;
+  }
+
+  #home .cards .stat-card strong {
+    font-size: clamp(.9rem, 4.2vw, 1.18rem);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  #home .panel:has(.daily-budget) {
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  #home .panel:has(.daily-budget) .section-head {
+    margin-bottom: 6px;
+  }
+
+  #home .panel:has(.daily-budget) .section-head h3 {
+    font-size: .95rem;
+  }
+
+  #home .daily-budget {
+    gap: 4px;
+    padding-top: 0;
+  }
+
+  #home .daily-budget strong {
+    font-size: clamp(1.25rem, 6vw, 1.7rem);
+  }
+
+  #home .daily-budget small {
+    font-size: .72rem;
+    line-height: 1.25;
+  }
+
+  .transaction-tabs { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 360px) {
+  #home .cards { gap: 6px; }
+  #home .cards .stat-card { min-height: 70px; padding: 10px; }
+  #home .cards .stat-card strong { font-size: .86rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
