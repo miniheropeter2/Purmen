@@ -83,7 +83,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
-      // static app
+      // no-op in static environment
     }
   };
 
@@ -118,6 +118,7 @@
 
   const buildStyles = () => {
     if (document.getElementById('moneyflow-runtime-style')) return;
+
     const style = document.createElement('style');
     style.id = 'moneyflow-runtime-style';
     style.textContent = `
@@ -158,6 +159,7 @@
   const populateMonthSelect = () => {
     const monthSelect = document.getElementById('monthSelect');
     if (!monthSelect) return;
+
     const currentYear = new Date().getFullYear();
     const months = [];
     for (let i = 0; i < 18; i += 1) {
@@ -204,7 +206,6 @@
     const state = loadState();
     const month = currentMonth();
 
-    // Home filter excludes income
     const homeTx = state.transactions.filter((tx) => {
       const txMonth = String(tx.date || '').slice(0, 7);
       return txMonth === month && tx.type !== 'income';
@@ -328,7 +329,7 @@
     if (!container) return;
 
     if (!state.loans.length) {
-      container.innerHTML = '<div class="empty-state">No loan records yet.</div>';
+      container.innerHTML = '<div class=\"empty-state\">No loan records yet.</div>';
       return;
     }
 
@@ -370,6 +371,27 @@
     `).join('');
   };
 
+  const renderBudgetList = () => {
+    const state = loadState();
+    const container = document.getElementById('budgetList');
+    if (!container) return;
+
+    if (!state.budgets.length) {
+      container.innerHTML = '<div class="empty-state">No budgets yet.</div>';
+      return;
+    }
+
+    container.innerHTML = state.budgets.map((budget) => `
+      <div class="settings-item">
+        <div class="meta">
+          <strong>${esc(budget.category)}</strong>
+          <small>${money(safeNumber(budget.amount))} for ${esc(budget.month)}</small>
+        </div>
+        <button type="button" class="remove-btn" data-remove-budget="${esc(budget.id)}">Delete</button>
+      </div>
+    `).join('');
+  };
+
   const renderQuickActions = () => {
     const state = loadState();
     const container = document.getElementById('quickActions');
@@ -406,7 +428,7 @@
     if (!container) return;
 
     if (!state.categories.length) {
-      container.innerHTML = '<div class="empty-state">No categories yet.</div>';
+      container.innerHTML = '<div class=\"empty-state\">No categories yet.</div>';
       return;
     }
 
@@ -670,7 +692,12 @@
     const loanSelect = form.querySelector('select[name="loanId"]');
 
     if (typeSelect) typeSelect.value = preset.type || 'expense';
-    if (categorySelect && preset.category) categorySelect.value = preset.category;
+    if (categorySelect && preset.category) {
+      categorySelect.innerHTML = getCategoriesByType(typeSelect.value).map((cat) => `
+        <option value="${esc(cat.name)}">${esc(cat.name)}</option>
+      `).join('') || '<option value="">No categories</option>';
+      categorySelect.value = preset.category;
+    }
     if (amountInput && preset.amount !== undefined) amountInput.value = preset.amount;
     if (noteInput && preset.note) noteInput.value = preset.note;
     if (loanSelect && preset.loanId) loanSelect.value = preset.loanId;
@@ -708,6 +735,9 @@
       } else if (formMode === 'repayment') {
         formRef.querySelector('select[name="type"]').value = 'expense';
         formRef.querySelector('select[name="category"]').value = 'Loan repayment';
+      } else {
+        formRef.querySelector('select[name="type"]').value = preset.type || 'expense';
+        formRef.querySelector('select[name="category"]').value = preset.category || formRef.querySelector('select[name="category"]').value;
       }
     };
 
